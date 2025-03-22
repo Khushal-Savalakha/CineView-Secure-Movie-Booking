@@ -1,197 +1,72 @@
-# 🎥 CineView - Secure Movie Booking System
+# CineView Frontend
 
-**CineView** is an advanced movie ticket booking system designed to provide users with a seamless and secure experience. Featuring real-time seat updates, secure payment processing via Stripe, and a robust booking management system, CineView ensures a smooth user journey from movie browsing to ticket booking.
+CineView is a secure and dynamic movie booking application that provides real-time updates, payment integration, and an intuitive user interface.  
 
-This project utilizes **Django REST Framework** for backend development, **React** and **Vite** for frontend, and **Tailwind CSS** for elegant UI styling. It also includes a **Stripe** payment gateway integration managed by a separate Express.js server.
+## Features
 
-## 🎥 Video Overview
+- **User Authentication**: Secure login and signup system.  
+- **Real-Time Booking Updates**: Ensures seat availability is always up-to-date.  
+- **Payment Integration**: Seamless payments using **Stripe**.  
+- **Movie Listings**: Displays all available movies with details.  
+- **Booking History**: Users can view past and upcoming bookings.  
+- **Responsive UI**: Built with **React & Tailwind CSS** for a smooth user experience.  
 
-[Watch the Video](https://github.com/user-attachments/assets/eaf83c93-2bb5-4884-aa30-5fbba85ba2c4)
+## Tech Stack
 
----
+- **Frontend**: React, Redux, Tailwind CSS  
+- **Backend**: Django REST Framework  
+- **Database**: AWS RDS (MySQL)  
 
-## 📁 Project Structure
+## Database Configuration
 
-The project consists of the following Django apps:
+CineView uses **AWS RDS MySQL** as its primary database. Below is the configuration setup:  
 
-1. **api**: Manages user data (authentication and registration).
-2. **BookingDetails**: Stores all booking-related information.
-3. **SeatDetails**: Tracks seat availability and updates seat reservation statuses in real-time.
+### AWS RDS Security Groups
 
-**Servers in use**:
+Here are the security group settings used to allow access to the **AWS RDS MySQL** database:  
 
-- **Django** - Backend API.
-- **React** - Frontend (Vite for build).
-- **Stripe Server** - Payment gateway using Express.js.
+![AWS RDS Security Group 1](https://github.com/user-attachments/assets/288efee3-6ed4-4b04-8487-af8990034fb6)  
+![AWS RDS Security Group 2](https://github.com/user-attachments/assets/abd5eb47-9226-4e8d-84d1-c68a78e8d348)  
+![AWS RDS Security Group 3](https://github.com/user-attachments/assets/00be4662-4bc6-42a2-bb19-fb5759c4a571)  
+![AWS RDS Security Group 4](https://github.com/user-attachments/assets/21158201-2b03-430b-8b2a-b56b66faeddb)  
 
----
+### Database Connection via DBeaver
 
-## ⚙️ Tech Stack
+The database is accessed and managed using **DBeaver**. Below are the connection details:  
 
-- **Frontend**: React, Vite, Tailwind CSS
-- **Backend**: Django REST Framework
-- **Payment Gateway**: Stripe (Express.js Server)
-- **Database**: SQLite (development)
-
----
-
-## 🎯 Key Features
-
-- **Movie Browsing**: Browse through a list of available movies with details on date and time slots.
-- **Search Functionality**: Users can search for movies, with appropriate messaging for no results found.
-- **Secure User Authentication**: Users must register and log in to book tickets.
-- **Real-time Seat Updates**: Updates seat availability in real-time to prevent overbookings.
-- **Stripe Integration**: Secure payment processing with a clear flow for success and cancellation cases.
-- **Booking History**: Users can view their booking history and download tickets or receipts.
----
-
-## 🗂️ Data Models Overview
-
-### `api/models.py` - User Data
-```python
-from django.db import models
-
-class UserData(models.Model):
-    name = models.CharField(max_length=30)
-    email = models.EmailField(unique=True)
-    password = models.CharField(max_length=128)
-```
-
-### `BookingDetails/models.py` - Booking Data
-```python
-from django.db import models
-
-class BookingData(models.Model):
-    email = models.EmailField()  # Customer email
-    movie_name = models.CharField(max_length=255)
-    date = models.CharField(max_length=50)
-    time_slot = models.CharField(max_length=50)
-    seat_number = models.CharField(max_length=255)
-    amount = models.IntegerField()
-```
-
-### `SeatDetails/models.py` - Seat Availability
-```python
-from django.db import models
-
-class MovieAvailability(models.Model):
-    movie_name = models.CharField(max_length=255)
-    date = models.CharField(max_length=30)
-    time_slot = models.CharField(max_length=20)
-    seat_status = models.CharField(max_length=30)  # Seat reservation status
-```
+![DBeaver Connection 1](https://github.com/user-attachments/assets/69749bca-8a21-4e42-b736-6ff9be8bd04b)  
+![DBeaver Connection 2](https://github.com/user-attachments/assets/e6fadb2d-5be0-499c-9908-b85a7a906078)  
+![DBeaver Connection 3](https://github.com/user-attachments/assets/b60096eb-04ef-4a9f-a7de-f6ac7c971fe9)  
 
 ---
 
-## 📊 Visual Workflow Diagram
+## Getting Started
 
-The following diagram outlines the workflow from user authentication and movie browsing, to seat selection, booking, and payment via Stripe.
-
-```mermaid
-graph TD; 
-    A[User] -->|Login/Register| B[Home Page]; 
-    B -->|Fetch Movie Cards| C[Show Movie Cards ]; 
-    C -->|Select Movie Card| D[Show Movie Details]; 
-    D -->|Click on Book| E[Book Tickets Page]; 
-    E -->|Select Date and Time| F[MovieAvailability Model]; 
-    F -->|Fetch Seats Data For Selected Movie, Date, and Time| G[Show Real-time Seat Status]; 
-    G -->|Select Seats| H[Book Tickets]; 
-    H -->|Proceed to Payment| I[Stripe Payment]; 
-    I -->|Payment Confirmation| J[BookingData Model]; 
-
-```
-
----
-
-## 🚀 Features & Usage
-
-1. **Movie Search**: Users can search for movies. If the movie exists, it will display available dates and time slots; otherwise, a "No results found" message is shown.
-2. **Seat Selection**: Users must select both a date and a time slot before booking. If a time slot isn't selected, the system prompts users to select one.
-3. **Secure Payment**: Users can securely pay via Stripe. If the payment is successful, booking details are saved, and users can download their tickets and receipts.
-4. **Error Handling**: If the payment fails or is canceled, the system redirects the user to a cancellation page, and no booking is saved.
-
----
-
-## 🛠️ Setup & Installation
-
-### Clone the repository:
+### Clone the Repository  
 
 ```bash
-git clone https://github.com/Khushal-Savalakha/CineView-Secure-Movie-Booking.git
+git clone https://github.com/Khushal-Savalakha/CineView-Frontend.git
+cd CineView-Frontend
 ```
 
-### Backend Setup (Django):
+### Install Dependencies  
 
-1. **Navigate to the backend directory and Install dependencies**:
-   ```bash
-   cd Backend
-   ```
+```bash
+npm install
+```
 
-2. **Run database migrations**:
-   ```bash
-   python manage.py migrate
-   ```
-3. **Start the Django development server**:
-   ```bash
-   python manage.py runserver
-   ```
+### Run the Application  
 
-### Frontend Setup (React):
+```bash
+npm start
+```
 
-1. **Navigate to the frontend directory**:
-   ```bash
-   cd Frontend
-   ```
-2. **Install npm dependencies**:
-   ```bash
-   npm install
-   ```
-3. **Start the React development server (Vite)**:
-   ```bash
-   npm run dev
-   ```
-
-### Stripe Server Setup:
-
-1. **Navigate to the stripe-server directory**:
-   ```bash
-   cd Stripe-Server
-   ```
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
-3. **Start the Express.js server**:
-   ```bash
-   node index.js
-   ```
-
-
-## 🌐 Payment Flow with Stripe
-
-The payment process is securely managed via Stripe. If a user completes a booking, the payment details are saved, and the user is shown a success page. If the payment fails or is canceled, they are redirected to a cancellation page.
-
-- **Success URL**: Displays a confirmation message and provides the option to download the booking receipt.
-- **Cancel URL**: Redirects to a page displaying an apology message, offering to return to the booking history.
+The frontend will be available at `http://localhost:3000`.  
 
 ---
 
-## 📄 Booking History
-![image](https://github.com/user-attachments/assets/ef4659ec-05d8-40ff-98f1-8c18f32aa689)
+## Backend Setup
 
-Once a ticket is successfully booked, users can view their booking history.
+Make sure the **Django backend** is running. Follow the backend repository for more details:  
 
----
-
-## 🧩 Future Improvements
-
-- **Movie Reviews**: Allow users to review and rate movies.
-- **Refund Management**: Implement a refund process for ticket cancellations.
-- **Admin Dashboard**: Provide advanced controls for admins to manage movies, bookings, and user data.
-
-
----
-
-Enjoy a secure and seamless movie booking experience with **CineView**! 🎬🍿
-
-
+[**CineView Backend**](https://github.com/Khushal-Savalakha/CineView-Backend)  
